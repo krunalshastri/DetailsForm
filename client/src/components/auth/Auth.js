@@ -19,6 +19,7 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(true);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -33,14 +34,21 @@ const Auth = () => {
         const { data } = await api.logIn(formData);
         localStorage.setItem('user', JSON.stringify({ ...data }));
         console.log(data);
+        history.push('/details');
       } catch (error) {
+        console.log(error.response.data.errors[0].msg);
+        setError(error.response.data.errors[0].msg);
+
         console.error(error);
       }
     } else {
       try {
         const { data } = await api.signUp(formData);
         localStorage.setItem('user', JSON.stringify({ ...data }));
+        history.push('/details');
       } catch (error) {
+        console.log(error.response.data.errors[0].msg);
+        setError(error.response.data.errors[0].msg);
         console.error(error);
       }
     }
@@ -60,6 +68,7 @@ const Auth = () => {
     setIsSignedUp((prev) => !prev);
     setShowPassword(false);
     setShowConfirmPassword(false);
+    setError('');
   };
 
   const handleShowPassword = () => {
@@ -76,6 +85,7 @@ const Auth = () => {
         <Avatar className={classes.avatar}>
           <LockIcon />
         </Avatar>
+        <p style={{ color: 'red' }}>{error}</p>
         <Typography variant='h5'>
           {isSignedUp ? 'Sign In' : 'Sign Up'}
         </Typography>

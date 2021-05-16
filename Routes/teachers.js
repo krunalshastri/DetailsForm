@@ -23,6 +23,7 @@ router
           subject: req.body.subject,
           name: user.name,
           user: req.user.id,
+          email: user.email,
         };
 
         let profile = await Teacher.findOne({ user: req.user.id });
@@ -64,7 +65,6 @@ router.route('/teachers').get(auth_m, async (req, res) => {
 router.route('/teachers').delete(auth_m, async (req, res) => {
   try {
     await Teacher.findOneAndRemove({ user: req.user.id });
-    await User.findByIdAndRemove({ _id: req.user.id });
     res.json('Teacher removed!');
   } catch (err) {
     console.error(err.message);

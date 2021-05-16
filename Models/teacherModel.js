@@ -12,6 +12,9 @@ const teacherSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  email: {
+    type: String,
+  },
 });
 
 module.exports = Teacher = mongoose.model('teachers', teacherSchema);

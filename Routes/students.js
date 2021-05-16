@@ -18,11 +18,12 @@ router
 
       try {
         const user = await User.findById(req.user.id).select('-password');
-
+        console.log(user);
         const newStud = {
           age: req.body.age,
           name: user.name,
           user: req.user.id,
+          email: user.email,
         };
 
         let profile = await Student.findOne({ user: req.user.id });
@@ -64,7 +65,6 @@ router.route('/students').get(auth_m, async (req, res) => {
 router.route('/students').delete(auth_m, async (req, res) => {
   try {
     await Student.findOneAndRemove({ user: req.user.id });
-    await User.findByIdAndRemove({ _id: req.user.id });
     res.json('Student removed!');
   } catch (err) {
     console.error(err.message);

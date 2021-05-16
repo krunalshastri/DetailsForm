@@ -52,7 +52,7 @@ router
           { expiresIn: 360000 },
           (err, token) => {
             if (err) throw err;
-            res.json(token);
+            res.status(200).json({ profile: user, token });
           }
         );
       } catch (err) {
